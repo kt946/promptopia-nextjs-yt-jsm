@@ -1,12 +1,12 @@
 import { connectToDB } from '@utils/database';
 import Prompt from '@models/prompt';
 
-export const GET = async (req) => {
+export const GET = async (req, { params }) => {
   try {
     await connectToDB();
 
-    // get all prompts
-    const prompts = await Prompt.find({}).populate('creator');
+    // get all prompts from a specific user whose id is equal to params.id
+    const prompts = await Prompt.find({ creator: params.id }).populate('creator');
 
     return new Response(JSON.stringify(prompts), { status: 200 });
   } catch (error) {
